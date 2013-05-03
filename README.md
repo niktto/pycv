@@ -29,7 +29,7 @@ web servers.
 Configuration
 =============
 
-All you need to know and set is located in `translations` folder __init__ file.
+All you need to know and set is located in `translations` folder `__init__` file.
 Just open this file and read comments that are there to guide you through
 the process.
 
