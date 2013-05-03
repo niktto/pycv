@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ context.get('name') }}: Curriculum vitae">
+    <meta name="author" content="{{ context.get('name') }}">
+
+    <title>{{ context.get('name') }}: Curriculum vitae</title>
+
+    <script type="text/javascript">
+      WebFontConfig = {
+        google: { families: [ 'Ubuntu:400,700:latin,latin-ext' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+
+    <style type="text/css">
+    h4 { margin-top: 28px;}
+    h2 { text-align: center; }
+    img { border: rgb(51, 51, 51) 10px solid;}
+    .imagediv { text-align: center;}
+    </style>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="preview" id="top">
+
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container" style="width: auto;">
+            <ul class="nav">
+              {% for name, link in context.get('social') %}
+              <li><a href="{{ link }}">{{ name | capitalize }}</a></li>
+              {% endfor %}
+            </ul>
+          <div class="nav-collapse">
+            <ul class="nav pull-right">
+              {% for name, section in context.get('sections') %}
+              <li><a href="#{{ name }}" style="padding-left: 5px; padding-right: 5px;">{{ name | capitalize }}</a></li>
+              {% endfor %}
+              <li><a href="#skills" style="padding-left: 5px; padding-right: 5px;">{{ _("Skills") }}</a></li>
+            </ul>
+          </div><!-- /.nav-collapse -->
+        </div>
+      </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->
+
+    <div class="container">
+      <header class="jumbotron subhead" id="overview">
+        <div class="row">
+          <div class="span4 imagediv">
+              <img alt="" src="{{ url_for('static', filename=context['photo']) }}">
+          </div>
+          <div class="span8">
+            <h1>{{ context.get('name') }}</h1>
+            <blockquote>
+              {{ context.get('lead') | safe }}
+            </blockquote>
+          </div>
+        </div>
+        <hr>
+      </header>
+
+    {% for name, section in context.get('sections') %}
+    <section id="{{ name }}" style="text-align: justify;">
+      <div class="row">
+        <div class="span12">
+          <h2><i class="icon-double-angle-right"></i> {{ name }}:<a href="#{{ name }}"></a></h2>
+          {{ section | safe}}
+        </div>
+      </div>
+    </section>
+    <hr>
+    {% endfor %}
+
+    <section id="skills" style="text-align: justify;">
+    <h2><i class="icon-cogs"></i> {{ _("Skills") }}:<a href="#skills"></a></h2>
+    {% for name, about in context.get('skills') %}
+    <div class="row">
+    <div class="span12">
+    <h3><i class="icon-cog"></i> {{ name }}:</h3>
+    {{ about | safe}}
+    </div>
+    </div>
+    {% endfor %}
+    </section>
+    <hr>
+
+    </div><!-- /container -->
+    <footer id="footer">
+        <div class="well">
+          <div class="container">
+          <div class="row">
+            <div class="span8">
+              <h3 class="footer-title">{{ _("About this site") }}</h3>
+              <p>{{ _("This place was created using awesome <a href='http://bootswatch.com/readable/' target='_blank'>Readable</a> by <a href='http://thomaspark.me/' target='_blank'>Thomas Park</a>.") }}</p>
+              <p>{{ _("<a href='http://bootswatch.com/readable/' target='_blank'>Readable</a> is based on <a href='http://twitter.github.com/bootstrap/' target='_blank'>Bootstrap</a> - designed and built with all the love in the world by <a href='http://twitter.com/mdo' target='_blank'>@mdo</a> and <a href='http://twitter.com/fat' target='_blank'>@fat</a>.") }}</p>
+              <p>{{ _("To download and use this CV template (pycv) just go check out this repository: <a href='https://github.com/niktto/' target='_blank'>github.com/niktto</a>.") }}</p>
+              <p>{{ _("All of the code is licensed under <a href='http://lunduke.com/?page_id=4039' target='_blank' >The Greater Lunduke License</a> - it sounds fun and I don't know much about licensing.") }}</p>
+              </p>
+            </div> <!-- /span8 -->
+            <div class="span4">
+              <div class="footer-banner">
+                <h3 class="footer-title">{{ _("Hire me now!") }}</h3>
+                <p>{{ _("If you are interested in my services - please contact me at <a href='mailto:{0}'>{0}</a>").format(context['email']) }}</p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>
+
