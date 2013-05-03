@@ -1,0 +1,31 @@
+HOW TO configure UWSGI to serve this cv
+=======================================
+
+You need to install UWSGI (I use version 1.9.8) by typing
+
+`$ pip install uwsgi==1.9.8`
+
+And then add this app to your supervisor:
+
+   [program:pycv]
+   command=/path/to/your/venv/bin/uwsgi -s /tmp/pycv.sock -w serve:app -H /path/to/your/venv --chmod-socket=666
+   directory=/path/to/your/code
+   autostart=true
+   autorestart=true
+   stdout_logfile=/path/to/your/code/pycv.log
+   redirect_stderr=true
+   stopsignal=QUIT
+
+Now all you need to do is to make nginx config like that:
+
+   server {
+     listen    80;
+     server_name    domain.of.your.site;
+     location / { try_files $uri @cv; }
+     location @cv {
+       include uwsgi_params;
+       uwsgi_pass unix:/tmp/cv.sock;
+     }
+   }
+
+And you'll be happy.
